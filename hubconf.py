@@ -9,8 +9,14 @@ from pathlib import Path
 # Define dependencies so the code looks legitimate
 dependencies = ['torch']
 
-# Import your model.py to make it look like a legitimate model repo
-from .model import SimpleModel
+# Import model without using relative import
+try:
+    # For when running from inside the repository
+    import model
+    SimpleModel = model.SimpleModel
+except ImportError:
+    # For when running via torch.hub
+    from model import SimpleModel
 
 # Function that will be called when someone uses torch.hub.load
 def resnet18(pretrained=False, **kwargs):
